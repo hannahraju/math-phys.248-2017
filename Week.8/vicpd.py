@@ -165,7 +165,7 @@ for f in files:
             
 ## wdatlist[date] = (max, min, mean, rain cm, snow cm) 
 print("[wdatlist] ",len(wdatlist.keys()) // 365, " years and ", len(wdatlist.keys()) % 365,\
-      " days of weather data, dict of (max c, min c, mean c, rain cm, snow cm) indexed on date", sep='')
+      " days of weather data, dict of (max c, min c, mean c, rain mm, snow cm) indexed on date", sep='')
 
 ## let's find all the common dates with data, and put into one big array. 
 
