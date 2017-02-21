@@ -3,6 +3,7 @@ import pprint as pp
 import os as os
 import fnmatch as fn
 import datetime as dt
+import sys
 
 from operator import attrgetter
 from collections import defaultdict
@@ -14,9 +15,9 @@ print("Loading the VicPD library.")
 sfile = Path("../data/vic_crimereports.json")
 if (sfile.is_file()==False):
     print("data/vic_crimereports.json does not exist.  Please unzip crimereports.zip")
-    exit()
+    sys.exit()
         
-with open('../data/vic_crimereports.json') as data_file:    
+with open('../data/vic_crimereports.json', encoding='utf-8') as data_file:    
     pdata = js.load(data_file)
 
 ## reverse-lookup for defining our reduced data set. 
@@ -127,11 +128,15 @@ def weekdaycount(crtype):
                 daycount[x.incident_datetime.weekday()] += 1
     return daycount
 
+## crime types, day of week percentages, returns 7-element list
+## crtype input is either single string top-level crime type
+## or a pair of strings (top level, detailed crime type)
 def weekdaypct(crtype):
     wdk = weekdaycount(crtype)
     T = all_tots[crtype]
     return ['{:.1f}'.format(100*x/T) for x in wdk]
 
+## 
 def presentBDWeek(crtype):
     retval = "Mon, Tue, Wed, Thu, Fri, Sat, Sun\n";
     retval += str(weekdaypct(crtype))
@@ -148,7 +153,7 @@ files = fn.filter(os.listdir('../data'), "eng-daily*.csv")
 wdatlist = {}
 
 for f in files:
-    with open("../data/"+f) as fo:
+    with open("../data/"+f, encoding='utf-8') as fo:
         content = fo.readlines()
         for j in range(26, len(content)):
             ab = content[j].split(',')
